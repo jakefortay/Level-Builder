@@ -72,7 +72,7 @@ function writeToFile() {
     output.write(",\n");
   }
   
-  output.write('  ]');
+  output.write('  ]\n');
   output.write('}');
   
   
