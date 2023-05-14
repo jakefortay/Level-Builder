@@ -2,7 +2,7 @@
 
 let lastPressed = 0;
 
-let mouseWasPressed = false;
+let mouseDown = false;
 let mouseWasReleased = false;
 
 let rectX, rectY, endX, endY;
@@ -56,7 +56,7 @@ function draw() {
   }
   
 
-  if (mouseWasPressed && mouseWasReleased) {
+  if (mouseWasReleased) {
     if(mode == MODE.FLOORS){
       addRect(floors);
     }else if(mode == MODE.HAZARDS){
@@ -68,8 +68,31 @@ function draw() {
       playerStartY = mouseY; 
     }
     
-    mouseWasPressed = false;
+    mouseDown = false;
     mouseWasReleased = false;
+  }
+
+  if (mouseDown) {
+    if(mode == MODE.FLOORS){
+      drawRectToCursor(COLORS.DRAWING.BLACK);
+    }else if(mode == MODE.HAZARDS){
+      drawRectToCursor(COLORS.DRAWING.RED);
+    }else if(mode == MODE.ENDPOINTS){
+      drawRectToCursor(COLORS.DRAWING.GREEN);
+    }
+  }
+  else {
+    if(mode == MODE.FLOORS){
+      drawPointAtCursor(COLORS.DRAWING.BLACK, 10);
+    }else if(mode == MODE.HAZARDS){
+      drawPointAtCursor(COLORS.DRAWING.RED, 10);
+    }else if(mode == MODE.ENDPOINTS){
+      drawPointAtCursor(COLORS.DRAWING.GREEN, 10);
+    }
+  }
+  
+  if(mode == MODE.PLAYER_START) {
+    drawPointAtCursor(COLORS.DRAWING.CYAN, 10);
   }
   
   fill(COLORS.SOLID.CYAN);
@@ -126,6 +149,18 @@ function keyPressed() {
   }
 }
 
+function drawPointAtCursor(color, size) {
+  fill(color)
+  circle(mouseX, mouseY, size);
+}
+
+function drawRectToCursor(color) {
+  let w = mouseX - rectX;
+  let h = mouseY - rectY;
+  fill(color);
+  rect(rectX, rectY, w, h);
+}
+
 function addRect(a) {
   let w = endX - rectX;
   let h = endY - rectY;
@@ -138,7 +173,7 @@ function addRect(a) {
 function mousePressed() {
   rectX = mouseX;
   rectY = mouseY;
-  mouseWasPressed = true;
+  mouseDown = true;
 }
 
 function mouseReleased() {

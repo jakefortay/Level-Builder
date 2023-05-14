@@ -3,6 +3,7 @@ const COLORS = {
 		BLACK: "rgba(0, 0, 0, 0.5)",
 		RED: "rgba(255, 0, 0, 0.5)",
 		GREEN: "rgba(0, 255, 0, 0.5)",
+		CYAN: "rgba(0, 255, 255, 0.25)",
 	},
 	SOLID: {
 		BLACK: "rgba(0, 0, 0, 1)",
