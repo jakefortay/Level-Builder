@@ -41,17 +41,17 @@ function draw() {
   
   
   for (let i in floors) {
-    fill("black");
+    fill(COLORS.SOLID.BLACK);
     floors[i].draw();
   }
   
   for (let i in hazards){
-    fill("red")
+    fill(COLORS.SOLID.RED)
     hazards[i].draw(); 
   }
   
   for (let i in endPoints){
-    fill("green");
+    fill(COLORS.SOLID.GREEN);
     endPoints[i].draw(); 
   }
   
@@ -72,26 +72,26 @@ function draw() {
     mouseWasReleased = false;
   }
   
-  fill("cyan");
+  fill(COLORS.SOLID.CYAN);
   circle(playerStartX, playerStartY, 20);
   
-  fill("white");
+  fill(COLORS.TEXT.LIGHT);
   text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
   
   if(mode == 0){
-    fill("white");
+    fill(COLORS.TEXT.LIGHT);
     text("NOW DRAWING: FLOORS", width - 250, 15);
   }else if(mode == 1){
     
-    fill("red");
+    fill(COLORS.SOLID.RED);
     text("NOW DRAWING: HAZARDS", width - 250, 15);
   }else if(mode == 2){
     
-    fill("green");
+    fill(COLORS.SOLID.GREEN);
     text("NOW DRAWING: ENDPOINTS", width - 250, 15);
   }else if(mode == 3){
     
-    fill("cyan");
+    fill(COLORS.SOLID.CYAN);
     text("NOW DRAWING: STARTPOINT", width - 250, 15);
   }
   
