@@ -64,8 +64,8 @@ function draw() {
     }else if(mode == MODE.ENDPOINTS){
       addRect(endPoints);
     }else if(mode == MODE.PLAYER_START){
-      playerStartX = mouseX;
-      playerStartY = mouseY; 
+      playerStartX = snap(mouseX);
+      playerStartY = snap(mouseY); 
     }
     
     mouseDown = false;
@@ -119,7 +119,7 @@ function draw() {
   }
   
   
-  
+  if (DEBUG_MODE) drawGrid();
 }
 
 function keyPressed() {
@@ -158,17 +158,29 @@ function drawRectToCursor(color) {
   let w = mouseX - rectX;
   let h = mouseY - rectY;
   fill(color);
-  rect(rectX, rectY, w, h);
+  rect(snap(rectX), snap(rectY), snap(w), snap(h));
 }
 
 function addRect(a) {
   let w = endX - rectX;
   let h = endY - rectY;
 
-  a.push(new Rectangle(rectX, rectY, w, h));
+  a.push(new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h)));
 }
 
+function snap(point) {
+  let delta = point % GRID_SPACING;
+  return delta > GRID_SPACING/2 ? point + (GRID_SPACING - delta) : point - delta;
+}
 
+function drawGrid() {
+  for (let i = 0; i < width; i += GRID_SPACING) {
+    for (let j = 0; j < height; j += GRID_SPACING) {
+      fill(COLORS.DRAWING.BLACK);
+      circle(i, j, 1);
+    }
+  }
+}
 
 function mousePressed() {
   rectX = mouseX;

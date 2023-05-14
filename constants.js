@@ -1,3 +1,7 @@
+const DEBUG_MODE = false;
+
+const GRID_SPACING = 20;
+
 const COLORS = {
 	DRAWING: {
 		BLACK: "rgba(0, 0, 0, 0.5)",
