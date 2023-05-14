@@ -174,8 +174,8 @@ function snap(point) {
 }
 
 function drawGrid() {
-  for (let i = 0; i < width; i += SNAP_TO) {
-    for (let j = 0; j < height; j += SNAP_TO) {
+  for (let i = 0; i < width; i += GRID_SPACING) {
+    for (let j = 0; j < height; j += GRID_SPACING) {
       fill(COLORS.DRAWING.BLACK);
       circle(i, j, 1);
     }
