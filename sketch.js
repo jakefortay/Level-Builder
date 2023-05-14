@@ -57,13 +57,13 @@ function draw() {
   
 
   if (mouseWasPressed && mouseWasReleased) {
-    if(mode == 0){
+    if(mode == MODE.FLOORS){
       addRect(floors);
-    }else if(mode == 1){
+    }else if(mode == MODE.HAZARDS){
       addRect(hazards);
-    }else if(mode == 2){
+    }else if(mode == MODE.ENDPOINTS){
       addRect(endPoints);
-    }else if(mode == 3){
+    }else if(mode == MODE.PLAYER_START){
       playerStartX = mouseX;
       playerStartY = mouseY; 
     }
@@ -78,18 +78,18 @@ function draw() {
   fill(COLORS.TEXT.LIGHT);
   text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
   
-  if(mode == 0){
+  if(mode == MODE.FLOORS){
     fill(COLORS.TEXT.LIGHT);
     text("NOW DRAWING: FLOORS", width - 250, 15);
-  }else if(mode == 1){
+  }else if(mode == MODE.HAZARDS){
     
     fill(COLORS.SOLID.RED);
     text("NOW DRAWING: HAZARDS", width - 250, 15);
-  }else if(mode == 2){
+  }else if(mode == MODE.ENDPOINTS){
     
     fill(COLORS.SOLID.GREEN);
     text("NOW DRAWING: ENDPOINTS", width - 250, 15);
-  }else if(mode == 3){
+  }else if(mode == MODE.PLAYER_START){
     
     fill(COLORS.SOLID.CYAN);
     text("NOW DRAWING: STARTPOINT", width - 250, 15);
@@ -101,13 +101,13 @@ function draw() {
 
 function keyPressed() {
   if (keyCode === DELETE) {
-    if(mode == 0 && floors.length > 4){
+    if(mode == MODE.FLOORS && floors.length > 4){
       floors.pop();
-    }else if(mode == 1){
+    }else if(mode == MODE.HAZARDS){
       hazards.pop(); 
-    }else if(mode == 2){
+    }else if(mode == MODE.ENDPOINTS){
       endPoints.pop(); 
-    }else if(mode == 3){
+    }else if(mode == MODE.PLAYER_START){
       playerStartX = 0; 
       playerStartY = 0; 
     }
@@ -116,13 +116,13 @@ function keyPressed() {
   } else if (keyCode == ENTER) {
     writeToFile();
   }else if(key == '0'){
-    mode = 0; 
+    mode = MODE.FLOORS;
   }else if(key == '1'){
-    mode = 1; 
+    mode = MODE.HAZARDS;
   }else if(key == '2'){
-    mode = 2; 
+    mode = MODE.ENDPOINTS;
   }else if(key == '3'){
-    mode = 3; 
+    mode = MODE.PLAYER_START;
   }
 }
 

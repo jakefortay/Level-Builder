@@ -14,3 +14,10 @@ const COLORS = {
 		LIGHT: "rgba(255, 255, 255, 1)",
 	},
 };
+
+const MODE = {
+	FLOORS: 0,
+	HAZARDS: 1,
+	ENDPOINTS: 2,
+	PLAYER_START: 3
+}
