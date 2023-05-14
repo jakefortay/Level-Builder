@@ -3,7 +3,6 @@ function writeToFile() {
   output.write("{\n");
   output.write('  name: "' + name + '",\n');
   output.write('  playerStart: {x: ' + playerStartX + ", y: " + playerStartY + "},\n");
-  output.write('  generateFullWalls: true,\n');
   output.write('  floors: {\n');
   output.write('    static: [\n');
   
