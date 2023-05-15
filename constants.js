@@ -1,6 +1,6 @@
-const DEBUG_MODE = false;
+const DEBUG_MODE = true;
 
-const GRID_SPACING = 20;
+const GRID_SPACING = 10;
 
 const COLORS = {
 	DRAWING: {

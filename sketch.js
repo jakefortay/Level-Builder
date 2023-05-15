@@ -34,12 +34,6 @@ function setup() {
 function draw() {
   background(220);
 
-
-  
-  
-  
-  
-  
   for (let i in floors) {
     fill(COLORS.SOLID.BLACK);
     floors[i].draw();
@@ -99,7 +93,7 @@ function draw() {
   circle(playerStartX, playerStartY, 20);
   
   fill(COLORS.TEXT.LIGHT);
-  text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
+  text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE   4: DELETE MODE    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
   
   if(mode == MODE.FLOORS){
     fill(COLORS.TEXT.LIGHT);
@@ -116,6 +110,11 @@ function draw() {
     
     fill(COLORS.SOLID.CYAN);
     text("NOW DRAWING: STARTPOINT", width - 250, 15);
+  }else if(mode == MODE.DELETE){
+    text("CLICK TO DELETE", width - 250, 15);
+    checkMouseIntersect(floors);
+    checkMouseIntersect(hazards);
+    checkMouseIntersect(endPoints);
   }
   
   
@@ -146,6 +145,8 @@ function keyPressed() {
     mode = MODE.ENDPOINTS;
   }else if(key == '3'){
     mode = MODE.PLAYER_START;
+  }else if(key == '4'){
+    mode = MODE.DELETE;
   }
 }
 
@@ -192,4 +193,22 @@ function mouseReleased() {
   endX = mouseX;
   endY = mouseY;
   mouseWasReleased = true;
+}
+
+function checkMouseIntersect(objectList){
+
+  for(let i in objectList){
+
+    if(mouseX > objectList[i].x && mouseX < objectList[i].x + objectList[i].w &&
+       mouseY > objectList[i].y && mouseY < objectList[i].y + objectList[i].h &&
+       mouseIsPressed){
+        objectList.splice(i, 1);
+
+       }
+
+
+
+  }
+
+
 }
