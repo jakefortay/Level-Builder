@@ -2,6 +2,7 @@ function writeToFile() {
   
   output.write("{\n");
   output.write('  name: "' + name + '",\n');
+  output.write('  altSize: {width: ' + width + ', height: ' + height + "},")
   output.write('  playerStart: {x: ' + playerStartX + ", y: " + playerStartY + "},\n");
   output.write('  floors: {\n');
   output.write('    static: [\n');
@@ -16,7 +17,10 @@ function writeToFile() {
       floors[i].w +
       ", h: " +
       floors[i].h +
-      "}";
+      ", c: \"" + 
+      floors[i].c + 
+      "\"}";
+
     output.write(s);
     output.write(",\n");
   }
@@ -40,7 +44,9 @@ function writeToFile() {
       hazards[i].w +
       ", h: " +
       hazards[i].h +
-      "}";
+      ", c: \"" + 
+      hazards[i].c + 
+      "\"}";
     output.write(s);
     output.write(",\n");
   }
@@ -66,7 +72,9 @@ function writeToFile() {
       endPoints[i].w +
       ", h: " +
       endPoints[i].h +
-      "}";
+      ", c: \"" + 
+      endPoints[i].c + 
+      "\"}";
     output.write(s);
     output.write(",\n");
   }
