@@ -5,3 +5,13 @@ html, body {
 canvas {
   display: block;
 }
+
+#info-container {
+
+  position : absolute;
+  top: 20px;
+  left: 1700px; 
+  background-color: black; 
+  padding: 10px; 
+
+}

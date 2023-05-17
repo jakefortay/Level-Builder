@@ -14,14 +14,24 @@ let floors = [];
 let hazards = [];
 let endPoints = []; 
 
+let colorPallete = []; 
+let currentColor = "black"; 
+
 let output;
 
 let mode = 0; 
 
 let name = "Test Level";
 
+let runningWidth = 40; 
+let infoDiv; 
+
 function setup() {
-  createCanvas(1600, 800);
+  
+  const WIDTH = 1600;
+  const HEIGHT = 800;  
+
+  createCanvas(WIDTH, HEIGHT + 400);
 
   output = createWriter("output.txt");
 
@@ -29,10 +39,23 @@ function setup() {
   floors.push(new Rectangle(width - 20, -100, 20, height + 200));
   floors.push(new Rectangle(-100, 0, width + 200, 20));
   floors.push(new Rectangle(-100, height - 20, width + 200, 20));
+
+  colorPicker = createColorPicker("red");
+  colorPicker.position(width, 400);
+
+  infoDiv = createDiv('Hello');
+  infoDiv.position(1700, 100);
+
+  setInterval(printNums, 2000);
+
 }
 
 function draw() {
   background(220);
+
+  let s = printNums(); 
+
+  infoDiv.html(s);
 
   for (let i in floors) {
     fill(COLORS.SOLID.BLACK);
@@ -42,14 +65,27 @@ function draw() {
   for (let i in hazards){
     fill(COLORS.SOLID.RED)
     hazards[i].draw(); 
+    fill("white");
+    text("H", hazards[i].x + (hazards[i].w / 2) - 5, (hazards[i].y + (hazards[i].h / 2)))
   }
   
   for (let i in endPoints){
     fill(COLORS.SOLID.GREEN);
     endPoints[i].draw(); 
   }
-  
 
+  for(let i in colorPallete){
+    colorPallete[i].draw(); 
+    if((mouseX > colorPallete[i].x && mouseX < colorPallete[i].x + colorPallete[i].size &&
+       mouseY > colorPallete[i].y && mouseY < colorPallete[i].y + colorPallete[i].size) && 
+       mouseIsPressed){
+        currentColor = colorPallete[i].color; 
+
+       }
+
+
+  }
+  
   if (mouseWasReleased) {
     if(mode == MODE.FLOORS){
       addRect(floors);
@@ -93,7 +129,7 @@ function draw() {
   circle(playerStartX, playerStartY, 20);
   
   fill(COLORS.TEXT.LIGHT);
-  text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE   4: DELETE MODE    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
+  text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE   4: DELETE MODE    5: SAVE COLOR    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
   
   if(mode == MODE.FLOORS){
     fill(COLORS.TEXT.LIGHT);
@@ -116,9 +152,15 @@ function draw() {
     checkMouseIntersect(hazards);
     checkMouseIntersect(endPoints);
   }
-  
-  
+    
   if (DEBUG_MODE) drawGrid();
+
+
+  fill("white");
+  text("Current Color: ", width - 240, height - 5)
+  fill(currentColor);
+  rect(width - 150, height - 20, 60);
+
 }
 
 function keyPressed() {
@@ -147,6 +189,10 @@ function keyPressed() {
     mode = MODE.PLAYER_START;
   }else if(key == '4'){
     mode = MODE.DELETE;
+  }else if(key == '5'){
+    colorPallete.push(new colorButtons(runningWidth, height - 20, colorPicker.color()));
+    runningWidth += 60; 
+    print(runningWidth)
   }
 }
 
@@ -166,7 +212,7 @@ function addRect(a) {
   let w = endX - rectX;
   let h = endY - rectY;
 
-  a.push(new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h)));
+  a.push(new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h), currentColor));
 }
 
 function snap(point) {
@@ -197,18 +243,12 @@ function mouseReleased() {
 
 function checkMouseIntersect(objectList){
 
-  for(let i in objectList){
+  for(let i = objectList.length - 1; i >= 0; i--){
 
-    if(mouseX > objectList[i].x && mouseX < objectList[i].x + objectList[i].w &&
-       mouseY > objectList[i].y && mouseY < objectList[i].y + objectList[i].h &&
+    if((mouseX > objectList[i].x && mouseX < objectList[i].x + objectList[i].w &&
+       mouseY > objectList[i].y && mouseY < objectList[i].y + objectList[i].h) &&
        mouseIsPressed){
         objectList.splice(i, 1);
-
        }
-
-
-
   }
-
-
 }
