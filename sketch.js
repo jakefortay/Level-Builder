@@ -279,9 +279,23 @@ function checkMouseIntersect(objs){
 
   for(let i = objs.length - 1; i >= 0; i--){
 
+    let tempRectX = rectX; 
+    let tempRectY = rectY; 
+
+    if(rectX > endX){
+      rectX = endX; 
+      endX = tempRectX;
+    }
+
+    if(rectY > endY){
+      rectY = endY; 
+      endY = tempRectY;
+    }
+
     let w = endX - rectX; 
     let h = endY - rectY; 
 
+  
     let leftSide = objs[i].x > rectX && objs[i].x < rectX + w; 
     let rightSide = objs[i].x + objs[i].w > rectX && objs[i].x + objs[i].w < rectX + w; 
     
