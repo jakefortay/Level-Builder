@@ -8,12 +8,14 @@ const COLORS = {
 		RED: "rgba(255, 0, 0, 0.5)",
 		GREEN: "rgba(0, 255, 0, 0.5)",
 		CYAN: "rgba(0, 255, 255, 0.25)",
+		GRAY: "rgba(60, 60, 60, 0.5)"
 	},
 	SOLID: {
 		BLACK: "rgba(0, 0, 0, 1)",
 		RED: "rgba(255, 0, 0, 1)",
 		GREEN: "rgba(0, 255, 0, 1)",
 		CYAN: "rgba(0, 255, 255, 1)",
+		BROWN: "rgba(117, 102, 102, 1)"
 	},
 	TEXT: {
 		LIGHT: "rgba(255, 255, 255, 1)",

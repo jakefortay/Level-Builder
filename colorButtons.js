@@ -4,7 +4,7 @@ class colorButtons {
         this.color = color;
         this.x = x;
         this.y = y; 
-        this.size = 20; 
+        this.size = 50; 
     }
 
 

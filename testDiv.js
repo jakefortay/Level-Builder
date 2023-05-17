@@ -7,8 +7,9 @@ function printNums(){
     s += "Floors: <br>";
 
     for(let i in floors){
-        s += i.toString() + ":&nbsp;&nbsp;&nbsp; X:" + floors[i].x.toString() + ":&nbsp;&nbsp;&nbsp; Y:" + floors[i].y.toString() + "<br>";
-    }
+        s += i.toString() + ":&nbsp;&nbsp;&nbsp; X:" + floors[i].x.toString() + ":&nbsp;&nbsp;&nbsp; Y:" + floors[i].y.toString();
+        s += ":&nbsp;&nbsp;&nbsp; W:" + floors[i].w.toString() + ":&nbsp;&nbsp;&nbsp; H:" + floors[i].h.toString() + "<br>";
+    }   
 
     s += "<br>Hazards: <br>"
 
