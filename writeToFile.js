@@ -2,7 +2,7 @@ function writeToFile() {
   
   output.write("{\n");
   output.write('  name: "' + name + '",\n');
-  output.write('  altSize: {width: ' + width + ', height: ' + height + "},")
+  output.write('  altSize: {width: ' + WIDTH + ', height: ' + HEIGHT + "},")
   output.write('  playerStart: {x: ' + playerStartX + ", y: " + playerStartY + "},\n");
   output.write('  floors: {\n');
   output.write('    static: [\n');

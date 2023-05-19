@@ -236,8 +236,21 @@ function drawRectToCursor(color) {
 }
 
 function addRect(a) {
-  let w = endX - rectX;
-  let h = endY - rectY;
+  let tempRectX = rectX; 
+  let tempRectY = rectY; 
+
+  if(rectX > endX){
+    rectX = endX; 
+    endX = tempRectX;
+  }
+
+  if(rectY > endY){
+    rectY = endY; 
+    endY = tempRectY;
+  }
+
+  let w = endX - rectX; 
+  let h = endY - rectY; 
 
   if(abs(w) >= 6 && abs(h) >= 6 && rectX >= 20 && rectX <= WIDTH - 20 && rectY > 20 && rectY < HEIGHT - 20){
     a.push(new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h), currentColor));
