@@ -31,9 +31,16 @@ let runningHeight = HEIGHT + 50;
 
 let infoDiv; 
 
+let gridBuffer;
+
 function setup() {
 
   palletWidth = floor(WIDTH / 100) - 2;
+
+  if (DEBUG_MODE) {
+    gridBuffer = createGraphics(WIDTH, HEIGHT);
+    preMakeGrid(gridBuffer);
+  }
 
   createCanvas(WIDTH, HEIGHT + 400);
 
@@ -122,10 +129,10 @@ function draw() {
   fill(COLORS.SOLID.CYAN);
   circle(playerStartX, playerStartY, 20);
   
+  if (DEBUG_MODE && gridBuffer) image(gridBuffer, 0, 0, WIDTH, HEIGHT);
+  
   fill(COLORS.TEXT.LIGHT);
   text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE   4: DELETE MODE    5: SAVE COLOR    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
-  
-  if (DEBUG_MODE) drawGrid();
 
   outputMenuElements(); 
 
@@ -264,11 +271,11 @@ function snap(point) {
   return delta > GRID_SPACING/2 ? point + (GRID_SPACING - delta) : point - delta;
 }
 
-function drawGrid() {
+function preMakeGrid(gridBuffer) {
+  fill(COLORS.DRAWING.BLACK);
   for (let i = 0; i < WIDTH; i += GRID_SPACING) {
     for (let j = 0; j < HEIGHT; j += GRID_SPACING) {
-      fill(COLORS.DRAWING.BLACK);
-      circle(i, j, 1);
+      gridBuffer.circle(i, j, 1);
     }
   }
 }
