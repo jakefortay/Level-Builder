@@ -238,8 +238,30 @@ function drawPointAtCursor(color, size) {
 function drawRectToCursor(color) {
   let w = mouseX - rectX;
   let h = mouseY - rectY;
+
   fill(color);
+
   rect(snap(rectX), snap(rectY), snap(w), snap(h));
+
+  textSize(20);
+  textFont('Georgia')
+
+  fill("purple")
+
+  if(mouseY > rectY){
+    text(abs(snap(w)), rectX + (w / 2) - 20, rectY + h + GRID_SPACING + 30);
+  }else{
+    text(abs(snap(w)), rectX + (w / 2) - 20, mouseY - GRID_SPACING - 30);
+  }
+
+  if(mouseX > rectX){
+    text(abs(snap(h)), rectX + (w) + 30, rectY + h / 2);
+  }else{
+    text(abs(snap(h)), mouseX - 50, rectY + h / 2);
+  }  
+
+
+
 }
 
 function addRect(a) {
@@ -259,7 +281,7 @@ function addRect(a) {
   let w = endX - rectX; 
   let h = endY - rectY; 
 
-  if(abs(w) >= 6 && abs(h) >= 6 && rectX >= 20 && rectX <= WIDTH - 20 && rectY > 20 && rectY < HEIGHT - 20){
+  if(abs(w) >= 6 && abs(h) >= 6 && rectX >= 0 && rectX <= WIDTH && rectY > 0 && rectY < HEIGHT && endX >= 0 && endX <= WIDTH && endY >= 0 && endY <= HEIGHT){
     a.push(new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h), currentColor));
   }
 
