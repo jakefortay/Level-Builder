@@ -18,7 +18,7 @@ let hazards = [];
 let endPoints = []; 
 
 let colorPallete = []; 
-let currentColor = "black"; 
+let currentColor = COLORS.SOLID.BLACK; 
 
 let output;
 
@@ -51,7 +51,7 @@ function setup() {
   floors.push(new Rectangle(-100, 0, WIDTH + 200, 20));
   floors.push(new Rectangle(-100, HEIGHT - 20, WIDTH + 200, 20));
 
-  colorPicker = createColorPicker("red");
+  colorPicker = createColorPicker(COLORS.SOLID.RED);
   colorPicker.position(WIDTH * 3/4 + 300, HEIGHT + 45);
 
   infoDiv = createDiv('Hello');
@@ -75,13 +75,13 @@ function draw() {
   
   for (let i in hazards){
     hazards[i].draw(); 
-    fill("white");
+    fill(COLORS.TEXT.LIGHT);
     text("H", hazards[i].x + (hazards[i].w / 2) - 5, (hazards[i].y + (hazards[i].h / 2)))
   }
   
   for (let i in endPoints){
     endPoints[i].draw();  
-    fill("white");
+    fill(COLORS.TEXT.LIGHT);
     text("E", endPoints[i].x + (endPoints[i].w / 2) - 5, (endPoints[i].y + (endPoints[i].h / 2)))
   }
 
@@ -140,7 +140,7 @@ function draw() {
 
 function outputMenuElements(){
 
-  fill('white');
+  fill(COLORS.TEXT.LIGHT);
   rect(0, HEIGHT, WIDTH, 20);
   rect(0, HEIGHT + 380, WIDTH, 20);
   rect(0, HEIGHT, 20, 400);
@@ -151,12 +151,12 @@ function outputMenuElements(){
 
   textSize(32);
   textFont('Georgia');
-  fill('black');
+  fill(COLORS.SOLID.BLACK);
   text("CURRENT COLOR", WIDTH * 3/4, HEIGHT + 70);
   fill(currentColor);
   rect(WIDTH * 3/4, HEIGHT + 100, 275, 30);
 
-  fill('black');
+  fill(COLORS.SOLID.BLACK);
   text("CURRENT MODE", WIDTH * 3/4, HEIGHT + 200);
   
   if(mode == MODE.FLOORS){
