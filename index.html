@@ -12,9 +12,27 @@
     </main>
 		<script src="constants.js"></script>
     <script src="sketch.js"></script>
+    <script src="domUtil.js"></script>
     <script src="Rectangle.js"></script>
     <script src="writeToFile.js"></script>
     <script src="colorButtons.js"></script>
-    <script src="testDiv.js"></script>
   </body>
+  <div id="object-container">
+    <div id="header">
+      <span>Game Objects</span>
+    </div>
+    <ul id="object-list">
+    </ul>
+  </div>
+
+  <template id="list-item-template">
+    <li id="list-item-id" class="list-item">
+      <button>X</button>
+      <input data-id="tag-id" class="object-tag-input" type="text" placeholder="Shape name" />
+      <label>x: </label><input data-point="x" data-id="x-id" class="object-position-input" type="number" />
+      <label>y: </label><input data-point="y" data-id="y-id" class="object-position-input" type="number" />
+      <label>w: </label><input data-point="w" data-id="w-id" class="object-position-input" type="number" />
+      <label>h: </label><input data-point="h" data-id="h-id" class="object-position-input" type="number" />
+    </li>
+  </template>
 </html>

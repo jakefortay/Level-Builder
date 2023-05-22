@@ -1,19 +1,17 @@
 class Rectangle {
 
-  constructor(x, y, w, h, c){
+  constructor(x, y, w, h, c, tag){
 
     this.x = x;
     this.y = y;
     this.w = w; 
     this.h = h; 
-    this.c = c; 
-  
+    this.c = c == null ? COLORS.SOLID.BLACK : c;
+    this.id = crypto.randomUUID();
+    this.tag = tag;
   }
   
   draw(){
-    if(this.c == null){
-      this.c = "black";
-    }
 
     fill(this.c);
 
