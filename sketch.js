@@ -29,8 +29,6 @@ let name = "Test Level";
 let runningWidth = 40; 
 let runningHeight = HEIGHT + 50; 
 
-let infoDiv; 
-
 let gridBuffer;
 
 function setup() {
@@ -46,28 +44,15 @@ function setup() {
 
   output = createWriter("output.txt");
 
-  floors.push(new Rectangle(0, -100, 20, HEIGHT + 125));
-  floors.push(new Rectangle(WIDTH - 20, -100, 20, HEIGHT + 125));
-  floors.push(new Rectangle(-100, 0, WIDTH + 200, 20));
-  floors.push(new Rectangle(-100, HEIGHT - 20, WIDTH + 200, 20));
+  createBoundingWalls();
 
   colorPicker = createColorPicker(COLORS.SOLID.RED);
   colorPicker.position(WIDTH * 3/4 + 300, HEIGHT + 45);
 
-  infoDiv = createDiv('Hello');
-  infoDiv.position(1700, 100);
-
-  setInterval(printNums, 2000);
-
-}5
+}
 
 function draw() {
   background(220);
-
-
-  let s = printNums(); 
-
-  infoDiv.html(s);
 
   for (let i in floors) {
     floors[i].draw();
@@ -136,6 +121,13 @@ function draw() {
 
   outputMenuElements(); 
 
+}
+
+function createBoundingWalls() {
+  addRectToLevel(floors, new Rectangle(0, -100, 20, HEIGHT + 125, COLORS.SOLID.BLACK, "Left Wall"));
+  addRectToLevel(floors, new Rectangle(WIDTH - 20, -100, 20, HEIGHT + 125, COLORS.SOLID.BLACK, "Right Wall"));
+  addRectToLevel(floors, new Rectangle(-100, 0, WIDTH + 200, 20, COLORS.SOLID.BLACK, "Ceiling"));
+  addRectToLevel(floors, new Rectangle(-100, HEIGHT - 20, WIDTH + 200, 20, COLORS.SOLID.BLACK, "Floor"));
 }
 
 function outputMenuElements(){
@@ -282,10 +274,18 @@ function addRect(a) {
   let h = endY - rectY; 
 
   if(abs(w) >= 6 && abs(h) >= 6 && rectX >= 0 && rectX <= WIDTH && rectY > 0 && rectY < HEIGHT && endX >= 0 && endX <= WIDTH && endY >= 0 && endY <= HEIGHT){
-    a.push(new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h), currentColor));
+    addRectToLevel(a, new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h), currentColor, `Shape ${totalNumberOfShapes()}`));
   }
 
+}
 
+function totalNumberOfShapes() {
+  return floors.length + hazards.length + endPoints.length + 1;
+}
+
+function addRectToLevel(list, rect) {
+  list.push(rect);
+  addShapeToDomList(rect);
 }
 
 function snap(point) {
@@ -345,8 +345,8 @@ function checkMouseIntersect(objs){
     let bottomSide = objs[i].y + objs[i].h > rectY && objs[i].y + objs[i].h < rectY + h; 
 
 
-    if((topSide && rightSide) || (topSide && leftSide) || (bottomSide && rightSide) || (bottomSide && leftSide)){
-        objs.splice(i, 1);
-       }
+    if((topSide && rightSide) || (topSide && leftSide) || (bottomSide && rightSide) || (bottomSide && leftSide)) {
+        removeShapeFromDomList(objs[i].id);
+    }
   }
 }
