@@ -23,9 +23,7 @@ function addShapeToDomList(shape) {
 }
 
 function removeShapeFromDomList(id) {
-    floors = floors.filter(floor => floor.id != id);
-    hazards = hazards.filter(hazard => hazard.id != id);
-    endPoints = endPoints.filter(endPoint => endPoint.id != id);
+    gameObjects = gameObjects.filter(obj => obj.id != id)
     document.getElementById(id).remove();
 }
 
@@ -40,12 +38,5 @@ function updateShapeTag(id, input) {
 }
 
 function getObjectToModify(id) {
-    let floorsToModify = floors.filter(floor => floor.id == id);
-    if (floorsToModify.length > 0) return floorsToModify[0];
-
-    let hazardsToModify = hazards.filter(hazard => hazard.id == id);
-    if (hazardsToModify.length > 0) return hazardsToModify[0];
-
-    let endPointsToModify = endPoints.filter(endPoint => endPoint.id == id);
-    if (endPointsToModify.length > 0) return endPointsToModify[0];
+    return gameObjects.filter(obj => obj.id == id)[0];
 }
