@@ -10,26 +10,19 @@ let mouseWasReleased = false;
 
 let rectX, rectY, endX, endY;
 
-let playerStartX = -100; 
-let playerStartY = -100;
+let playerStart;
 
-let floors = [];
-let hazards = [];
-let endPoints = []; 
+let gameObjects = [];
 
 let colorPallete = []; 
 let currentColor = COLORS.SOLID.BLACK; 
 
-let output;
-
-let mode = 0; 
+let mode = MODE.FLOORS; 
 
 let name = "Test Level";
 
 let runningWidth = 40; 
 let runningHeight = HEIGHT + 50; 
-
-let infoDiv; 
 
 let gridBuffer;
 
@@ -44,63 +37,33 @@ function setup() {
 
   createCanvas(WIDTH, HEIGHT + 400);
 
-  output = createWriter("output.txt");
-
-  floors.push(new Rectangle(0, -100, 20, HEIGHT + 125));
-  floors.push(new Rectangle(WIDTH - 20, -100, 20, HEIGHT + 125));
-  floors.push(new Rectangle(-100, 0, WIDTH + 200, 20));
-  floors.push(new Rectangle(-100, HEIGHT - 20, WIDTH + 200, 20));
+  createBoundingWalls();
 
   colorPicker = createColorPicker(COLORS.SOLID.RED);
   colorPicker.position(WIDTH * 3/4 + 300, HEIGHT + 45);
 
-  infoDiv = createDiv('Hello');
-  infoDiv.position(1700, 100);
-
-  setInterval(printNums, 2000);
-
-}5
+  playerStart = new StartPoint(50, HEIGHT-50, 20, COLORS.SOLID.CYAN);
+}
 
 function draw() {
   background(220);
 
-
-  let s = printNums(); 
-
-  infoDiv.html(s);
-
-  for (let i in floors) {
-    floors[i].draw();
-  }
-  
-  for (let i in hazards){
-    hazards[i].draw(); 
-    fill(COLORS.TEXT.LIGHT);
-    text("H", hazards[i].x + (hazards[i].w / 2) - 5, (hazards[i].y + (hazards[i].h / 2)))
-  }
-  
-  for (let i in endPoints){
-    endPoints[i].draw();  
-    fill(COLORS.TEXT.LIGHT);
-    text("E", endPoints[i].x + (endPoints[i].w / 2) - 5, (endPoints[i].y + (endPoints[i].h / 2)))
+  for (let object of gameObjects) {
+    object.draw();
   }
 
-
-  
   if (mouseWasReleased) {
     if(mode == MODE.FLOORS){
-      addRect(floors);
+      addFloor();
     }else if(mode == MODE.HAZARDS){
-      addRect(hazards);
+      addHazard();
     }else if(mode == MODE.ENDPOINTS){
-      addRect(endPoints);
+      addEndPoint();
     }else if(mode == MODE.PLAYER_START){
-      playerStartX = snap(mouseX);
-      playerStartY = snap(mouseY); 
+      playerStart.x = snap(mouseX);
+      playerStart.y = snap(mouseY);
     }else if(mode == MODE.DELETE){
-      checkMouseIntersect(floors);
-      checkMouseIntersect(hazards);
-      checkMouseIntersect(endPoints);
+      checkMouseIntersect(gameObjects);
     }
     
     mouseDown = false;
@@ -126,16 +89,24 @@ function draw() {
     drawPointAtCursor(COLORS.DRAWING.CYAN, 10);
   }
   
-  fill(COLORS.SOLID.CYAN);
-  circle(playerStartX, playerStartY, 20);
+  playerStart.draw();
   
   if (DEBUG_MODE && gridBuffer) image(gridBuffer, 0, 0, WIDTH, HEIGHT);
   
+
+  textSize(12);
   fill(COLORS.TEXT.LIGHT);
   text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE   4: DELETE MODE    5: SAVE COLOR    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
 
   outputMenuElements(); 
 
+}
+
+function createBoundingWalls() {
+  addRectToLevel(new Rectangle(0, -100, 20, HEIGHT + 125, COLORS.SOLID.BLACK, "Left Wall"));
+  addRectToLevel(new Rectangle(WIDTH - 20, -100, 20, HEIGHT + 125, COLORS.SOLID.BLACK, "Right Wall"));
+  addRectToLevel(new Rectangle(-100, 0, WIDTH + 200, 20, COLORS.SOLID.BLACK, "Ceiling"));
+  addRectToLevel(new Rectangle(-100, HEIGHT - 20, WIDTH + 200, 20, COLORS.SOLID.BLACK, "Floor"));
 }
 
 function outputMenuElements(){
@@ -184,55 +155,39 @@ function outputMenuElements(){
        mouseIsPressed){
         currentColor = colorPallete[i].color; 
 
-       }
+    }
   }
-
-
-  textSize(12);
-
 }
 
 
 function keyPressed() {
   if (keyCode === DELETE) {
-    if(mode == MODE.FLOORS && floors.length > 4){
-      floors.pop();
-    }else if(mode == MODE.HAZARDS){
-      hazards.pop(); 
-    }else if(mode == MODE.ENDPOINTS){
-      endPoints.pop(); 
-    }else if(mode == MODE.PLAYER_START){
-      playerStartX = 0; 
-      playerStartY = 0; 
-    }
-    
-    
+    removeShapeFromDomList(gameObjects[gameObjects.length-1].id);
   } else if (keyCode == ENTER) {
     writeToFile();
-  }else if(key == '0'){
+  } else if (key == '0') {
     mode = MODE.FLOORS;
-  }else if(key == '1'){
+  } else if (key == '1') {
     mode = MODE.HAZARDS;
-  }else if(key == '2'){
+  } else if (key == '2') {
     mode = MODE.ENDPOINTS;
-  }else if(key == '3'){
+  } else if (key == '3') {
     mode = MODE.PLAYER_START;
-  }else if(key == '4'){
+  } else if (key == '4') {
     mode = MODE.DELETE;
-  }else if(key == '5' && colorPallete.length < (palletWidth * 4)){
-    if(colorPallete.length % palletWidth == 0 && colorPallete.length > 0){
+  } else if (key == '5' && colorPallete.length < (palletWidth * 4)) {
+    if (colorPallete.length % palletWidth == 0 && colorPallete.length > 0) {
       runningHeight += 80; 
       runningWidth = 40; 
     }
     colorPallete.push(new colorButtons(runningWidth, runningHeight, colorPicker.color()));
-    runningWidth += 80; 
-    print(runningWidth)
+    runningWidth += 80;
   }
 }
 
 function drawPointAtCursor(color, size) {
   fill(color)
-  circle(mouseX, mouseY, size);
+  circle(snap(mouseX), snap(mouseY), size);
 }
 
 function drawRectToCursor(color) {
@@ -243,9 +198,12 @@ function drawRectToCursor(color) {
 
   rect(snap(rectX), snap(rectY), snap(w), snap(h));
 
+  if (mode === MODE.DELETE) {
+    return;
+  }
+
   textSize(20);
   textFont('Georgia')
-
   fill("purple")
 
   if(mouseY > rectY){
@@ -259,33 +217,59 @@ function drawRectToCursor(color) {
   }else{
     text(abs(snap(h)), mouseX - 50, rectY + h / 2);
   }  
-
-
-
 }
 
-function addRect(a) {
+function shouldDrawRect() {
   let tempRectX = rectX; 
   let tempRectY = rectY; 
+  let w = endX - rectX; 
+  let h = endY - rectY; 
 
-  if(rectX > endX){
+  if (rectX > endX) {
     rectX = endX; 
     endX = tempRectX;
   }
 
-  if(rectY > endY){
+  if (rectY > endY) {
     rectY = endY; 
     endY = tempRectY;
   }
 
-  let w = endX - rectX; 
-  let h = endY - rectY; 
-
-  if(abs(w) >= 6 && abs(h) >= 6 && rectX >= 0 && rectX <= WIDTH && rectY > 0 && rectY < HEIGHT && endX >= 0 && endX <= WIDTH && endY >= 0 && endY <= HEIGHT){
-    a.push(new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h), currentColor));
+  if (abs(w) >= 6 && abs(h) >= 6 &&
+      rectX >= 0 && rectX <= WIDTH &&
+      rectY > 0 && rectY < HEIGHT &&
+      endX >= 0 && endX <= WIDTH &&
+      endY >= 0 && endY <= HEIGHT) {
+    return true;
   }
 
+  return false;
+}
 
+function addFloor() {
+  if (!shouldDrawRect()) { return; }
+  let w = endX - rectX; 
+  let h = endY - rectY; 
+  addRectToLevel(new Rectangle(snap(rectX), snap(rectY), snap(w), snap(h), currentColor, `Shape ${gameObjects.length}`));
+}
+
+function addHazard() {
+  if (!shouldDrawRect()) { return; }
+  let w = endX - rectX; 
+  let h = endY - rectY; 
+  addRectToLevel(new Hazard(snap(rectX), snap(rectY), snap(w), snap(h), currentColor, `Shape ${gameObjects.length}`));
+}
+
+function addEndPoint() {
+  if (!shouldDrawRect()) { return; }
+  let w = endX - rectX; 
+  let h = endY - rectY; 
+  addRectToLevel(new EndPoint(snap(rectX), snap(rectY), snap(w), snap(h), currentColor, `Shape ${gameObjects.length}`));
+}
+
+function addRectToLevel(rect) {
+  gameObjects.push(rect);
+  addShapeToDomList(rect);
 }
 
 function snap(point) {
@@ -345,8 +329,8 @@ function checkMouseIntersect(objs){
     let bottomSide = objs[i].y + objs[i].h > rectY && objs[i].y + objs[i].h < rectY + h; 
 
 
-    if((topSide && rightSide) || (topSide && leftSide) || (bottomSide && rightSide) || (bottomSide && leftSide)){
-        objs.splice(i, 1);
-       }
+    if((topSide && rightSide) || (topSide && leftSide) || (bottomSide && rightSide) || (bottomSide && leftSide)) {
+        removeShapeFromDomList(objs[i].id);
+    }
   }
 }

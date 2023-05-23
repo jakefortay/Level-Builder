@@ -2,16 +2,49 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
+body {
+  display: flex;
+  flex-direction: row;
+}
+
 canvas {
   display: block;
 }
 
-#info-container {
+#object-container {
+  height: 100%;
+  min-width: 480px;
+  margin: 15px;
+  background-color: #fafafa;
+  border-radius: 2px;
+  box-shadow: 2px 2px 7px 1px gray;
+}
 
-  position : absolute;
-  top: 20px;
-  left: 1700px; 
-  background-color: black; 
-  padding: 10px; 
+#header {
+  text-align: center;
+  padding: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid black;
+}
 
+#object-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.list-item {
+  padding-bottom: 5px;
+  height: 22px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.object-tag-input {
+  width: 8em;
+}
+
+.object-position-input {
+  width: 4em;
 }
