@@ -1,95 +1,48 @@
 function writeToFile() {
-  
-  output.write("{\n");
-  output.write('  name: "' + name + '",\n');
-  output.write('  altSize: {width: ' + WIDTH + ', height: ' + HEIGHT + "},")
-  output.write('  playerStart: {x: ' + playerStartX + ", y: " + playerStartY + "},\n");
-  output.write('  floors: {\n');
-  output.write('    static: [\n');
-  
-  for (let i in floors) {
-    let s =
-      "      {x: " +
-      floors[i].x +
-      ", y: " +
-      floors[i].y +
-      ", w: " +
-      floors[i].w +
-      ", h: " +
-      floors[i].h +
-      ", c: \"" + 
-      floors[i].c + 
-      "\"}";
 
-    output.write(s);
-    output.write(",\n");
+  const output = createWriter("output.txt");
+
+  output.print("{");
+  output.print(`\tname: "${name}",`);
+  output.print(`\taltSize: {width: ${WIDTH}, height: ${HEIGHT}},`)
+  output.print(`\tplayerStart: ${playerStart.getJson()},`);
+  output.print('\tfloors: {');
+  output.print('\t\tstatic: [');
+  
+  for (let floor of gameObjects.filter(obj => obj instanceof Rectangle)) {
+    output.print(`\t\t\t${floor.getJson()},`)
   }
   
-  output.write('    ],\n');
-  output.write('    moving: [\n');
-  output.write('    ],\n');
+  output.print('\t\t],');
+  output.print('\t\tmoving: [');
+  output.print('\t\t],');
   
-  output.write('  },\n');
+  output.print('\t},');
   
-  output.write('  hazards: {\n');
-  output.write('    static: [\n');
+  output.print('\thazards: {');
+  output.print('\t\tstatic: [');
   
-  for (let i in hazards) {
-    let s =
-      "      {x: " +
-      hazards[i].x +
-      ", y: " +
-      hazards[i].y +
-      ", w: " +
-      hazards[i].w +
-      ", h: " +
-      hazards[i].h +
-      ", c: \"" + 
-      hazards[i].c + 
-      "\"}";
-    output.write(s);
-    output.write(",\n");
+  for (let hazard of gameObjects.filter(obj => obj instanceof Hazard)) {
+    output.print(`\t\t\t${hazard.getJson()},`)
   }
   
-  output.write('    ],\n');
-  output.write('    moving: [\n');
-  output.write('    ],\n');
+  output.print('\t\t],');
+  output.print('\t\tmoving: [');
+  output.print('\t\t],');
   
-  output.write('    guns: [\n');
-  output.write('    ]\n');
+  output.print('\t\tguns: [');
+  output.print('\t\t]');
   
-  output.write('  },\n');
+  output.print('\t},');
   
-  output.write('  targets: [\n');
+  output.print('\ttargets: [');
   
-  for (let i in endPoints) {
-    let s =
-      "      {x: " +
-      endPoints[i].x +
-      ", y: " +
-      endPoints[i].y +
-      ", w: " +
-      endPoints[i].w +
-      ", h: " +
-      endPoints[i].h +
-      ", c: \"" + 
-      endPoints[i].c + 
-      "\"}";
-    output.write(s);
-    output.write(",\n");
+  for (let endPoint of gameObjects.filter(obj => obj instanceof EndPoint)) {
+    output.print(`\t\t${endPoint.getJson()},`)
   }
   
-  output.write('  ]\n');
-  output.write('}');
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  output.print('\t]');
+  output.print('}');
+
   output.close();
 }

@@ -28,4 +28,4 @@ const MODE = {
 	ENDPOINTS: 2,
 	PLAYER_START: 3,
 	DELETE: 4
-}
+};
