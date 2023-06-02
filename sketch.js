@@ -3,8 +3,6 @@
 const WIDTH = 1600;
 const HEIGHT = 1000;  
 
-let palletWidth; 
-
 let mouseDown = false;
 let mouseWasReleased = false;
 
@@ -14,33 +12,24 @@ let playerStart;
 
 let gameObjects = [];
 
-let colorPallete = []; 
-let currentColor = COLORS.SOLID.BLACK; 
+let currentColor = COLORS.SOLID.BLACK;
 
 let mode = MODE.FLOORS; 
 
 let name = "Test Level";
 
-let runningWidth = 40; 
-let runningHeight = HEIGHT + 50; 
-
 let gridBuffer;
 
 function setup() {
-
-  palletWidth = floor(WIDTH / 100) - 2;
 
   if (DEBUG_MODE) {
     gridBuffer = createGraphics(WIDTH, HEIGHT);
     preMakeGrid(gridBuffer);
   }
 
-  createCanvas(WIDTH, HEIGHT + 400);
+  createCanvas(WIDTH, HEIGHT);
 
   createBoundingWalls();
-
-  colorPicker = createColorPicker(COLORS.SOLID.RED);
-  colorPicker.position(WIDTH * 3/4 + 300, HEIGHT + 45);
 
   playerStart = new StartPoint(50, HEIGHT-50, 20, COLORS.SOLID.CYAN);
 }
@@ -96,39 +85,20 @@ function draw() {
 
   textSize(12);
   fill(COLORS.TEXT.LIGHT);
-  text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE   4: DELETE MODE    5: SAVE COLOR    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
+  text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE   4: DELETE MODE    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
 
   outputMenuElements(); 
 
 }
 
 function createBoundingWalls() {
-  addRectToLevel(new Rectangle(0, -100, 20, HEIGHT + 125, COLORS.SOLID.BLACK, "Left Wall"));
-  addRectToLevel(new Rectangle(WIDTH - 20, -100, 20, HEIGHT + 125, COLORS.SOLID.BLACK, "Right Wall"));
+  addRectToLevel(new Rectangle(0, -100, 20, HEIGHT + 100, COLORS.SOLID.BLACK, "Left Wall"));
+  addRectToLevel(new Rectangle(WIDTH - 20, -100, 20, HEIGHT + 100, COLORS.SOLID.BLACK, "Right Wall"));
   addRectToLevel(new Rectangle(-100, 0, WIDTH + 200, 20, COLORS.SOLID.BLACK, "Ceiling"));
   addRectToLevel(new Rectangle(-100, HEIGHT - 20, WIDTH + 200, 20, COLORS.SOLID.BLACK, "Floor"));
 }
 
-function outputMenuElements(){
-
-  fill(COLORS.TEXT.LIGHT);
-  rect(0, HEIGHT, WIDTH, 20);
-  rect(0, HEIGHT + 380, WIDTH, 20);
-  rect(0, HEIGHT, 20, 400);
-  rect(WIDTH - 20, HEIGHT, 20, 400);
-
-  fill(180);
-  rect(30, HEIGHT + 40, palletWidth * 80 - 10, 310);
-
-  textSize(32);
-  textFont('Georgia');
-  fill(COLORS.SOLID.BLACK);
-  text("CURRENT COLOR", WIDTH * 3/4, HEIGHT + 70);
-  fill(currentColor);
-  rect(WIDTH * 3/4, HEIGHT + 100, 275, 30);
-
-  fill(COLORS.SOLID.BLACK);
-  text("CURRENT MODE", WIDTH * 3/4, HEIGHT + 200);
+function outputMenuElements() {
   
   if(mode == MODE.FLOORS){
     fill(COLORS.TEXT.LIGHT);
@@ -146,16 +116,6 @@ function outputMenuElements(){
   }else if(mode == MODE.DELETE){
     fill(COLORS.SOLID.BROWN);
     text("DELETE", WIDTH * 3/4, HEIGHT + 250);
-  }
-
-  for(let i in colorPallete){
-    colorPallete[i].draw(); 
-    if((mouseX > colorPallete[i].x && mouseX < colorPallete[i].x + colorPallete[i].size &&
-       mouseY > colorPallete[i].y && mouseY < colorPallete[i].y + colorPallete[i].size) && 
-       mouseIsPressed){
-        currentColor = colorPallete[i].color; 
-
-    }
   }
 }
 
@@ -175,13 +135,6 @@ function keyPressed() {
     mode = MODE.PLAYER_START;
   } else if (key == '4') {
     mode = MODE.DELETE;
-  } else if (key == '5' && colorPallete.length < (palletWidth * 4)) {
-    if (colorPallete.length % palletWidth == 0 && colorPallete.length > 0) {
-      runningHeight += 80; 
-      runningWidth = 40; 
-    }
-    colorPallete.push(new colorButtons(runningWidth, runningHeight, colorPicker.color()));
-    runningWidth += 80;
   }
 }
 

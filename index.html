@@ -5,25 +5,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
+		<script src="constants.js"></script>
+    <script src="sketch.js"></script>
+    <script src="objectEditor.js"></script>
+    <script src="colorPalette.js"></script>
+    <script src="GameObjects.js"></script>
+    <script src="writeToFile.js"></script>
 
   </head>
   <body>
     <main>
     </main>
-		<script src="constants.js"></script>
-    <script src="sketch.js"></script>
-    <script src="domUtil.js"></script>
-    <script src="GameObjects.js"></script>
-    <script src="writeToFile.js"></script>
-    <script src="colorButtons.js"></script>
-  </body>
-  <div id="object-container">
-    <div id="header">
-      <span>Game Objects</span>
+    <div id="menus">
+      <div id="game-object-menu" class="menu-container">
+        <div class="menu-header">
+          <span>Game Objects</span>
+        </div>
+        <ul id="object-list">
+        </ul>
+      </div>
+      <div id="color-picker-menu" class="menu-container">
+        <div class="menu-header">
+          <span>Color Palette</span>
+        </div>
+        <div class="menu-body">
+          <div id="color-palette"></div>
+        </div>
+        <div class="menu-footer">
+          <button id="add-color" onclick="addColor()">
+            Add Color
+          </button>
+          <div id="color-picker-container" class="color-display">
+            <input type="color" id="color-picker">
+          </div>
+        </div>
+      </div>
     </div>
-    <ul id="object-list">
-    </ul>
-  </div>
+  </body>
 
   <template id="list-item-template">
     <li id="list-item-id" class="list-item">
@@ -34,5 +52,9 @@
       <label>w: </label><input data-point="w" data-id="w-id" class="object-position-input" type="number" />
       <label>h: </label><input data-point="h" data-id="h-id" class="object-position-input" type="number" />
     </li>
+  </template>
+
+  <template id="color-display-template">
+    <div id="new-color" class="color-display" onclick="selectColor(this)"></div>
   </template>
 </html>
