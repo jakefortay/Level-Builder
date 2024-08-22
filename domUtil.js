@@ -29,7 +29,12 @@ function removeShapeFromDomList(id) {
 
 function updateShapePosition(id, input) {
     let obj = getObjectToModify(id);
-    obj[input.dataset.point] = parseInt(input.value);
+
+    if (input.dataset.point === "dir") {
+        obj[input.dataset.point] = input.value; 
+    } else {
+        obj[input.dataset.point] = parseInt(input.value); 
+    }
 }
 
 function updateShapeTag(id, input) {

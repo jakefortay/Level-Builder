@@ -262,7 +262,7 @@ function addFloor() {
 
 function addHazard() {
   if (!shouldDrawRect()) { return; }
-  let w = endX - rectX; 2
+  let w = endX - rectX; 
   let h = endY - rectY; 
   addRectToLevel(new Hazard(snap(rectX), snap(rectY), snap(w), snap(h), currentColor, `Shape ${gameObjects.length}`));
 }
