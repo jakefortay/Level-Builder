@@ -28,6 +28,11 @@ function writeToFile() {
   
   output.print('\t\t],');
   output.print('\t\tmoving: [');
+
+  for (let mHazard of gameObjects.filter(obj => obj instanceof movingHazard)) {
+    output.print(`\t\t\t${mHazard.getJson()},`)
+  }
+
   output.print('\t\t],');
   
   output.print('\t\tguns: [');

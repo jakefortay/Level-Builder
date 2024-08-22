@@ -57,6 +57,8 @@ function draw() {
       addFloor();
     }else if(mode == MODE.HAZARDS){
       addHazard();
+    }else if(mode == MODE.MOVING_HAZARDS){
+      addMovingHazard();  
     }else if(mode == MODE.ENDPOINTS){
       addEndPoint();
     }else if(mode == MODE.PLAYER_START){
@@ -71,14 +73,14 @@ function draw() {
   }
 
   if (mouseDown) {
-    if(mode == MODE.FLOORS || mode == MODE.HAZARDS || mode == MODE.ENDPOINTS){
+    if(mode == MODE.FLOORS || mode == MODE.HAZARDS || mode == MODE.ENDPOINTS || mode == MODE.MOVING_HAZARDS){
       drawRectToCursor(currentColor);
     }else if(mode == MODE.DELETE){
       drawRectToCursor(COLORS.DRAWING.GRAY)
     }
   }
   else {
-    if(mode == MODE.FLOORS || mode == MODE.HAZARDS || mode == MODE.ENDPOINTS){
+    if(mode == MODE.FLOORS || mode == MODE.HAZARDS || mode == MODE.ENDPOINTS || mode == MODE.MOVING_HAZARDS){
       drawPointAtCursor(currentColor, 10);
     }else if(mode == MODE.DELETE){
       drawPointAtCursor(COLORS.DRAWING.GRAY, 10);
@@ -96,7 +98,7 @@ function draw() {
 
   textSize(12);
   fill(COLORS.TEXT.LIGHT);
-  text("0: FLOOR MODE    1: HAZARD MODE    2: ENDPOINT MODE    3: STARTPOINT MODE   4: DELETE MODE    5: SAVE COLOR    DEL: UNDO SHAPE    ENTER: SAVE TO FILE", 100, 15)
+  text("MODE:   0: FLOOR      1: HAZARD     2: M-HAZARD     3: ENDPOINT    4: STARTPOINT   5: DELETE   6: SAVE COLOR   DEL: UNDO SHAPE   ENTER: SAVE", 100, 15)
 
   outputMenuElements(); 
 
@@ -136,6 +138,9 @@ function outputMenuElements(){
   }else if(mode == MODE.HAZARDS){
     fill(COLORS.SOLID.RED);
     text("HAZARDS", WIDTH * 3/4, HEIGHT + 250);
+  }else if(mode == MODE.MOVING_HAZARDS){
+    fill(COLORS.SOLID.RED);
+    text("MOVING HAZARDS", WIDTH * 3/4, HEIGHT + 250);
   }else if(mode == MODE.ENDPOINTS){
     
     fill(COLORS.SOLID.GREEN);
@@ -170,12 +175,14 @@ function keyPressed() {
   } else if (key == '1') {
     mode = MODE.HAZARDS;
   } else if (key == '2') {
-    mode = MODE.ENDPOINTS;
+    mode = MODE.MOVING_HAZARDS;
   } else if (key == '3') {
-    mode = MODE.PLAYER_START;
+    mode = MODE.ENDPOINTS;
   } else if (key == '4') {
+    mode = MODE.PLAYER_START;
+  } else if (key == '5') {
     mode = MODE.DELETE;
-  } else if (key == '5' && colorPallete.length < (palletWidth * 4)) {
+  } else if (key == '6' && colorPallete.length < (palletWidth * 4)) {
     if (colorPallete.length % palletWidth == 0 && colorPallete.length > 0) {
       runningHeight += 80; 
       runningWidth = 40; 
@@ -255,10 +262,22 @@ function addFloor() {
 
 function addHazard() {
   if (!shouldDrawRect()) { return; }
-  let w = endX - rectX; 
+  let w = endX - rectX; 2
   let h = endY - rectY; 
   addRectToLevel(new Hazard(snap(rectX), snap(rectY), snap(w), snap(h), currentColor, `Shape ${gameObjects.length}`));
 }
+
+function addMovingHazard() {
+  if (!shouldDrawRect()) { return; }
+  let w = endX - rectX; 
+  let h = endY - rectY; 
+  let dir = "horizontal";
+  let l1 = 0; 
+  let l2 = 0; 
+  let spd = 0; 
+  addRectToLevel(new movingHazard(snap(rectX), snap(rectY), snap(w), snap(h), dir, l1, l2, spd, currentColor, `Shape ${gameObjects.length}`));
+}
+
 
 function addEndPoint() {
   if (!shouldDrawRect()) { return; }
